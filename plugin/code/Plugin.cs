@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Console = dev.gmeister.unsighted.modloader.code.console.Console;
 
 namespace dev.gmeister.unsighted.modloader.code;
 
@@ -19,11 +20,21 @@ public class Plugin : BaseUnityPlugin
 
     public static Plugin instance;
 
+    public Console console;
+
     public Plugin()
     {
         if (Plugin.instance != null) throw new ApplicationException("Cannot create another instance of Plugin as one already exists");
 
         new Harmony(GUID).PatchAll();
+
+        this.console = new Console(Config);
+        Plugin.instance = this;
+    }
+
+    public void OnGUI()
+    {
+        this.console.OnGUI();
     }
 
 }
